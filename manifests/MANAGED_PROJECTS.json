@@ -1,0 +1,19 @@
+{
+  "schema_version": "1.0.0",
+  "upstream": "UniversalStandards/UniversalStandards",
+  "projects": [
+    {"repo":"UniversalStandards/atlantis-ai-enhanced","tier":"canonical","adoption":"in_progress"},
+    {"repo":"UniversalStandards/Atlantis.ai","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/Generative-AI-System","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/PROJECT-SWARM","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/SWARM","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/HITMAN","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/HIT-MAN","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/openclaw","tier":"atlantis-connected","adoption":"planned"},
+    {"repo":"UniversalStandards/mcp","tier":"platform","adoption":"planned"},
+    {"repo":"UniversalStandards/github-mcp-server","tier":"platform","adoption":"planned"},
+    {"repo":"UniversalStandards/project-commander","tier":"platform","adoption":"planned"},
+    {"repo":"UniversalStandards/codex","tier":"platform","adoption":"planned"},
+    {"repo":"UniversalStandards/OpenMemory","tier":"platform","adoption":"planned"}
+  ]
+}
