@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "upstream_repository": "UniversalStandards/UniversalStandards",
+  "adopted_ref": "main",
+  "adopted_commit": "SET_TO_VERIFIED_UPSTREAM_COMMIT",
+  "project_tier": "managed",
+  "required_controls": [
+    "AGENTS.md",
+    ".github/copilot-instructions.md",
+    "capability-escalation",
+    "continuous-learning",
+    "independent-verification"
+  ],
+  "local_strengthening": [],
+  "intentional_deviations": [],
+  "last_reviewed_at": "SET_AT_ADOPTION"
+}
