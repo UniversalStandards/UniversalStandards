@@ -1,0 +1,28 @@
+{
+  "schema_version": "1.0.0",
+  "lessons": [
+    {
+      "id": "US-AI-LESSON-0001",
+      "title": "Current connector limitation is not automatically a project blocker",
+      "status": "promoted",
+      "scope": "portfolio",
+      "source_project": "UniversalStandards/atlantis-ai-enhanced",
+      "trigger": "Repository governance mutation was initially classified as blocked because the active connector exposed branch protection read-only.",
+      "improved_pattern": "Search the complete authorized execution surface, including GitHub issue-to-agent delegation, before escalating to a human.",
+      "canonical_controls": [
+        "AGENTS.md",
+        "standards/CAPABILITY_ESCALATION.md",
+        "standards/CONTINUOUS_LEARNING.md",
+        "standards/NEW_PROJECT_BOOTSTRAP.md"
+      ],
+      "enforcement": [
+        "project bootstrap conformance",
+        "agent instructions",
+        "independent result verification"
+      ],
+      "source_evidence": "ATLANTIS governance Issue #13 and associated blocker-resolution cycle",
+      "supersedes": [],
+      "superseded_by": null
+    }
+  ]
+}
