@@ -1,0 +1,32 @@
+name: Identity trust traceability
+
+on:
+  pull_request:
+    paths:
+      - 'manifests/IDENTITY_TRUST_CONTROLS.json'
+      - 'standards/IDENTITY_TRUST.md'
+      - 'standards/identity-trust/**'
+      - 'scripts/validate-identity-trust.mjs'
+      - '.github/workflows/identity-trust-traceability.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'manifests/IDENTITY_TRUST_CONTROLS.json'
+      - 'standards/IDENTITY_TRUST.md'
+      - 'standards/identity-trust/**'
+      - 'scripts/validate-identity-trust.mjs'
+      - '.github/workflows/identity-trust-traceability.yml'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Validate permanent control IDs and traceability contract
+        run: node scripts/validate-identity-trust.mjs

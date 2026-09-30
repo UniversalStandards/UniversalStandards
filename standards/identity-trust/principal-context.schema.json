@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/UniversalStandards/UniversalStandards/blob/main/standards/identity-trust/principal-context.schema.json",
+  "title": "Universal Standards PrincipalContext",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["principalId", "principalType", "authMethod", "roles", "scopes", "attributes"],
+  "properties": {
+    "principalId": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "principalType": {
+      "type": "string",
+      "enum": ["anonymous", "user", "service_account", "agent", "application", "workload"]
+    },
+    "tenantId": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "authMethod": { "type": "string", "enum": ["none", "oauth", "api_key", "workload_identity"] },
+    "roles": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "scopes": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "attributes": { "type": "object", "additionalProperties": true },
+    "credentialId": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "sessionId": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "issuedAt": { "type": "integer", "minimum": 0 },
+    "expiresAt": { "type": "integer", "minimum": 0 },
+    "delegatedBy": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "delegationId": { "type": "string", "minLength": 1, "maxLength": 256 }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "principalType": { "const": "anonymous" } } },
+      "then": { "properties": { "authMethod": { "const": "none" } } }
+    }
+  ]
+}
