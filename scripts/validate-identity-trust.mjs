@@ -1,10 +1,4 @@
 import fs from 'node:fs';
-import path from 'node:path';
-
-const root = process.cwd();
-const manifestPath = path.join(root, 'manifests', 'IDENTITY_TRUST_CONTROLS.json');
-const schemaPath = path.join(root, 'standards', 'identity-trust', 'principal-context.schema.json');
-const standardPath = path.join(root, 'standards', 'IDENTITY_TRUST.md');
 
 const failures = [];
 const canonicalControlIds = [
@@ -36,17 +30,31 @@ const requiredVerificationEvidence = [
   'independent_review',
   'rollback'
 ];
-const readJson = (file) => {
+const readManifest = () => {
   try {
-    return JSON.parse(fs.readFileSync(file, 'utf8'));
+    return JSON.parse(fs.readFileSync('manifests/IDENTITY_TRUST_CONTROLS.json', 'utf8'));
   } catch (error) {
-    failures.push(`${path.relative(root, file)}: ${error.message}`);
+    failures.push(`manifests/IDENTITY_TRUST_CONTROLS.json: ${error.message}`);
     return null;
   }
 };
+const readSchema = () => {
+  try {
+    return JSON.parse(fs.readFileSync('standards/identity-trust/principal-context.schema.json', 'utf8'));
+  } catch (error) {
+    failures.push(`standards/identity-trust/principal-context.schema.json: ${error.message}`);
+    return null;
+  }
+};
+const arrayFields = (control) => [
+  ['implementationIssues', control.implementationIssues],
+  ['implementationPullRequests', control.implementationPullRequests],
+  ['tests', control.tests],
+  ['evidence', control.evidence]
+];
 
-const manifest = readJson(manifestPath);
-const schema = readJson(schemaPath);
+const manifest = readManifest();
+const schema = readSchema();
 
 if (!manifest || !schema) {
   console.error(failures.join('\n'));
@@ -55,7 +63,7 @@ if (!manifest || !schema) {
 
 if (manifest.version !== 1) failures.push('manifest.version must be 1');
 if (manifest.sourceOfTruth !== 'UniversalStandards/UniversalStandards') failures.push('manifest.sourceOfTruth is incorrect');
-if (!fs.existsSync(standardPath)) failures.push('standards/IDENTITY_TRUST.md is missing');
+if (!fs.existsSync('standards/IDENTITY_TRUST.md')) failures.push('standards/IDENTITY_TRUST.md is missing');
 if (!Array.isArray(manifest.controls) || manifest.controls.length === 0) failures.push('manifest.controls must be non-empty');
 
 const ids = new Set();
@@ -76,8 +84,8 @@ for (const control of manifest.controls ?? []) {
   ids.add(control.id);
   if (!control.title || !control.requirement || !control.domain || !control.releaseGate) failures.push(`${control.id}: missing required control metadata`);
   if (!statuses.has(control.status)) failures.push(`${control.id}: invalid status ${control.status}`);
-  for (const field of ['implementationIssues', 'implementationPullRequests', 'tests', 'evidence']) {
-    if (!Array.isArray(control[field])) failures.push(`${control.id}: ${field} must be an array`);
+  for (const [field, value] of arrayFields(control)) {
+    if (!Array.isArray(value)) failures.push(`${control.id}: ${field} must be an array`);
   }
   for (const [index, evidence] of (control.evidence ?? []).entries()) {
     if (!evidence || typeof evidence !== 'object' || Array.isArray(evidence)) {
@@ -92,8 +100,8 @@ for (const control of manifest.controls ?? []) {
     }
   }
   if (control.status === 'verified') {
-    for (const field of ['implementationIssues', 'implementationPullRequests', 'tests', 'evidence']) {
-      if (control[field].length === 0) failures.push(`${control.id}: verified controls require ${field}`);
+    for (const [field, value] of arrayFields(control)) {
+      if (value.length === 0) failures.push(`${control.id}: verified controls require ${field}`);
     }
     const evidenceTypes = new Set((control.evidence ?? []).map((evidence) => evidence?.type));
     for (const evidenceType of requiredVerificationEvidence) {
