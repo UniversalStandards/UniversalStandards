@@ -7,6 +7,35 @@ const schemaPath = path.join(root, 'standards', 'identity-trust', 'principal-con
 const standardPath = path.join(root, 'standards', 'IDENTITY_TRUST.md');
 
 const failures = [];
+const canonicalControlIds = [
+  'IAM-ARCH-001',
+  'IAM-ARCH-002',
+  'IAM-KEY-001',
+  'IAM-KEY-002',
+  'IAM-OAUTH-001',
+  'IAM-AUTHZ-001',
+  'IAM-DELEG-001',
+  'IAM-AGENT-001',
+  'IAM-SECRET-001',
+  'IAM-AUDIT-001',
+  'IAM-MCP-001',
+  'IAM-TEST-001',
+  'IAM-REL-001'
+];
+const canonicalPrincipalRequiredFields = [
+  'principalId',
+  'principalType',
+  'authMethod',
+  'roles',
+  'scopes',
+  'attributes'
+];
+const requiredVerificationEvidence = [
+  'security_negative',
+  'documentation',
+  'independent_review',
+  'rollback'
+];
 const readJson = (file) => {
   try {
     return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -33,6 +62,10 @@ const ids = new Set();
 const statuses = new Set(manifest.statusValues);
 const idPattern = /^IAM-[A-Z]+-[0-9]{3}$/;
 
+if (manifest.controls?.length !== canonicalControlIds.length) {
+  failures.push(`manifest.controls must contain exactly ${canonicalControlIds.length} permanent controls`);
+}
+
 for (const control of manifest.controls ?? []) {
   if (!control || typeof control !== 'object') {
     failures.push('each control must be an object');
@@ -46,15 +79,50 @@ for (const control of manifest.controls ?? []) {
   for (const field of ['implementationIssues', 'implementationPullRequests', 'tests', 'evidence']) {
     if (!Array.isArray(control[field])) failures.push(`${control.id}: ${field} must be an array`);
   }
+  for (const [index, evidence] of (control.evidence ?? []).entries()) {
+    if (!evidence || typeof evidence !== 'object' || Array.isArray(evidence)) {
+      failures.push(`${control.id}: evidence[${index}] must be an object with type and ref`);
+      continue;
+    }
+    if (!requiredVerificationEvidence.includes(evidence.type)) {
+      failures.push(`${control.id}: evidence[${index}] has unsupported type ${evidence.type}`);
+    }
+    if (typeof evidence.ref !== 'string' || evidence.ref.length === 0) {
+      failures.push(`${control.id}: evidence[${index}] must include a non-empty ref`);
+    }
+  }
   if (control.status === 'verified') {
     for (const field of ['implementationIssues', 'implementationPullRequests', 'tests', 'evidence']) {
       if (control[field].length === 0) failures.push(`${control.id}: verified controls require ${field}`);
     }
+    const evidenceTypes = new Set((control.evidence ?? []).map((evidence) => evidence?.type));
+    for (const evidenceType of requiredVerificationEvidence) {
+      if (!evidenceTypes.has(evidenceType)) {
+        failures.push(`${control.id}: verified controls require ${evidenceType} evidence`);
+      }
+    }
   }
 }
 
+for (const controlId of canonicalControlIds) {
+  if (!ids.has(controlId)) failures.push(`missing permanent control id: ${controlId}`);
+}
+for (const controlId of ids) {
+  if (!canonicalControlIds.includes(controlId)) failures.push(`unexpected permanent control id: ${controlId}`);
+}
+
 if (schema.$id !== 'https://github.com/UniversalStandards/UniversalStandards/blob/main/standards/identity-trust/principal-context.schema.json') failures.push('PrincipalContext schema $id is incorrect');
-if (!schema.required?.includes('principalId') || !schema.required?.includes('authMethod')) failures.push('PrincipalContext schema is missing required identity fields');
+const schemaRequired = Array.isArray(schema.required) ? schema.required : [];
+const schemaRequiredSet = new Set(schemaRequired);
+if (schemaRequired.length !== canonicalPrincipalRequiredFields.length || canonicalPrincipalRequiredFields.some((field) => !schemaRequiredSet.has(field))) {
+  failures.push(`PrincipalContext schema must require exactly: ${canonicalPrincipalRequiredFields.join(', ')}`);
+}
+for (const field of canonicalPrincipalRequiredFields) {
+  if (!schema.properties || !Object.hasOwn(schema.properties, field)) {
+    failures.push(`PrincipalContext schema is missing property definition: ${field}`);
+  }
+}
+if (schema.additionalProperties !== false) failures.push('PrincipalContext schema must set additionalProperties to false');
 
 if (failures.length) {
   console.error(`Identity trust validation failed (${failures.length}):`);

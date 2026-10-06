@@ -45,7 +45,7 @@ The machine-readable shape is [`standards/identity-trust/principal-context.schem
 
 ## Definition of done
 
-A control is not verified because code exists. The manifest entry must link the implementation issue and pull request, tests, security/negative evidence, documentation, independent review and the applicable release gate. The validator intentionally accepts planned controls without evidence, but rejects a `verified` control with any missing trace link.
+A control is not verified because code exists. The manifest entry must link the implementation issue and pull request, tests, security/negative evidence, documentation, independent review and the applicable release gate. Verification evidence is recorded as objects with a controlled `type` (`security_negative`, `documentation`, `independent_review` or `rollback`) and a non-secret `ref`. The validator intentionally accepts planned controls without evidence, but rejects a `verified` control with any missing trace link or evidence category. The validator also pins the permanent control-ID set and the complete required PrincipalContext field set so a later edit cannot silently weaken the anti-forgetting contract.
 
 ## Required independent review
 
