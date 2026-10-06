@@ -24,6 +24,24 @@ const canonicalPrincipalRequiredFields = [
   'scopes',
   'attributes'
 ];
+const canonicalStatusValues = [
+  'planned',
+  'in_progress',
+  'verified',
+  'blocked',
+  'superseded',
+  'deprecated',
+  'rejected'
+];
+const canonicalPrincipalTypes = [
+  'anonymous',
+  'user',
+  'service_account',
+  'agent',
+  'application',
+  'workload'
+];
+const canonicalAuthMethods = ['none', 'oauth', 'api_key', 'workload_identity'];
 const requiredVerificationEvidence = [
   'security_negative',
   'documentation',
@@ -65,9 +83,12 @@ if (manifest.version !== 1) failures.push('manifest.version must be 1');
 if (manifest.sourceOfTruth !== 'UniversalStandards/UniversalStandards') failures.push('manifest.sourceOfTruth is incorrect');
 if (!fs.existsSync('standards/IDENTITY_TRUST.md')) failures.push('standards/IDENTITY_TRUST.md is missing');
 if (!Array.isArray(manifest.controls) || manifest.controls.length === 0) failures.push('manifest.controls must be non-empty');
+if (!Array.isArray(manifest.statusValues) || manifest.statusValues.length !== canonicalStatusValues.length || canonicalStatusValues.some((status) => !manifest.statusValues.includes(status))) {
+  failures.push(`manifest.statusValues must contain exactly: ${canonicalStatusValues.join(', ')}`);
+}
 
 const ids = new Set();
-const statuses = new Set(manifest.statusValues);
+const statuses = new Set(canonicalStatusValues);
 const idPattern = /^IAM-[A-Z]+-[0-9]{3}$/;
 
 if (manifest.controls?.length !== canonicalControlIds.length) {
@@ -122,7 +143,7 @@ for (const controlId of ids) {
 if (schema.$id !== 'https://github.com/UniversalStandards/UniversalStandards/blob/main/standards/identity-trust/principal-context.schema.json') failures.push('PrincipalContext schema $id is incorrect');
 const schemaRequired = Array.isArray(schema.required) ? schema.required : [];
 const schemaRequiredSet = new Set(schemaRequired);
-if (schemaRequired.length !== canonicalPrincipalRequiredFields.length || canonicalPrincipalRequiredFields.some((field) => !schemaRequiredSet.has(field))) {
+if (schemaRequired.length !== canonicalPrincipalRequiredFields.length || schemaRequiredSet.size !== schemaRequired.length || canonicalPrincipalRequiredFields.some((field) => !schemaRequiredSet.has(field))) {
   failures.push(`PrincipalContext schema must require exactly: ${canonicalPrincipalRequiredFields.join(', ')}`);
 }
 for (const field of canonicalPrincipalRequiredFields) {
@@ -131,6 +152,32 @@ for (const field of canonicalPrincipalRequiredFields) {
   }
 }
 if (schema.additionalProperties !== false) failures.push('PrincipalContext schema must set additionalProperties to false');
+
+const schemaProperties = schema.properties ?? {};
+const hasExactValues = (actual, expected) => Array.isArray(actual) && actual.length === expected.length && expected.every((value) => actual.includes(value));
+const principalIdSchema = schemaProperties.principalId;
+if (principalIdSchema?.type !== 'string' || principalIdSchema.minLength !== 1 || principalIdSchema.maxLength !== 256) {
+  failures.push('PrincipalContext principalId must be a bounded non-empty string');
+}
+const principalTypeSchema = schemaProperties.principalType;
+if (principalTypeSchema?.type !== 'string' || !hasExactValues(principalTypeSchema.enum, canonicalPrincipalTypes)) {
+  failures.push(`PrincipalContext principalType must enumerate exactly: ${canonicalPrincipalTypes.join(', ')}`);
+}
+const authMethodSchema = schemaProperties.authMethod;
+if (authMethodSchema?.type !== 'string' || !hasExactValues(authMethodSchema.enum, canonicalAuthMethods)) {
+  failures.push(`PrincipalContext authMethod must enumerate exactly: ${canonicalAuthMethods.join(', ')}`);
+}
+for (const [field, property] of [
+  ['roles', schemaProperties.roles],
+  ['scopes', schemaProperties.scopes]
+]) {
+  if (property?.type !== 'array' || property.uniqueItems !== true || property.items?.type !== 'string' || property.items.minLength !== 1) {
+    failures.push(`PrincipalContext ${field} must be a unique non-empty string array`);
+  }
+}
+if (schemaProperties.attributes?.type !== 'object' || schemaProperties.attributes.additionalProperties !== true) {
+  failures.push('PrincipalContext attributes must be an extensible object');
+}
 
 if (failures.length) {
   console.error(`Identity trust validation failed (${failures.length}):`);
