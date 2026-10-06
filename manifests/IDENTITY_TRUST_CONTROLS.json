@@ -54,8 +54,8 @@
       "repositories": ["UniversalStandards/mcp", "Universal-Standard/SWARM"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260"],
+      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts", "UniversalStandards/mcp/tests/unit/api-key-registry.test.ts"],
       "evidence": [],
       "releaseGate": "credential-lifecycle"
     },
@@ -69,8 +69,8 @@
       "repositories": ["UniversalStandards/mcp", "Universal-Standard/SWARM"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260"],
+      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts", "UniversalStandards/mcp/tests/unit/api-key-registry.test.ts"],
       "evidence": [],
       "releaseGate": "credential-lifecycle"
     },
@@ -99,8 +99,8 @@
       "repositories": ["UniversalStandards/mcp", "UniversalStandards/atlantis-ai-enhanced", "Universal-Standard/SWARM"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256", "UniversalStandards/atlantis-ai-enhanced#2"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/atlantis-ai-enhanced/pull/57", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/atlantis-ai-enhanced/packages/contracts/test/identity.test.ts", "UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/atlantis-ai-enhanced/pull/57", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260"],
+      "tests": ["UniversalStandards/atlantis-ai-enhanced/packages/contracts/test/identity.test.ts", "UniversalStandards/mcp/tests/unit/identity-trust.test.ts", "UniversalStandards/mcp/tests/unit/http-authentication.test.ts"],
       "evidence": [],
       "releaseGate": "authorization"
     },
@@ -144,7 +144,7 @@
       "repositories": ["UniversalStandards/mcp", "UniversalStandards/atlantis-ai-enhanced", "Universal-Standard/SWARM"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260"],
       "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
       "evidence": [],
       "releaseGate": "secrets"
@@ -159,8 +159,8 @@
       "repositories": ["UniversalStandards/mcp", "UniversalStandards/atlantis-ai-enhanced", "Universal-Standard/SWARM"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260", "https://github.com/UniversalStandards/mcp/pull/262"],
+      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts", "UniversalStandards/mcp/tests/unit/http-authentication.test.ts", "UniversalStandards/mcp/tests/unit/audit-log.test.ts"],
       "evidence": [],
       "releaseGate": "audit-observability"
     },
@@ -174,8 +174,8 @@
       "repositories": ["UniversalStandards/mcp"],
       "status": "planned",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260", "https://github.com/UniversalStandards/mcp/pull/261"],
+      "tests": ["UniversalStandards/mcp/tests/unit/identity-trust.test.ts", "UniversalStandards/mcp/tests/unit/http-authentication.test.ts"],
       "evidence": [],
       "releaseGate": "mcp-conformance"
     },
@@ -189,8 +189,8 @@
       "repositories": ["UniversalStandards/UniversalStandards", "UniversalStandards/mcp", "UniversalStandards/atlantis-ai-enhanced", "Universal-Standard/SWARM"],
       "status": "in_progress",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
-      "tests": ["UniversalStandards/UniversalStandards/.github/workflows/identity-trust-traceability.yml", "UniversalStandards/mcp/.github/workflows/identity-trust.yml"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260", "https://github.com/UniversalStandards/mcp/pull/261", "https://github.com/UniversalStandards/mcp/pull/262"],
+      "tests": ["UniversalStandards/UniversalStandards/.github/workflows/identity-trust-traceability.yml", "UniversalStandards/mcp/.github/workflows/identity-trust.yml", "UniversalStandards/mcp/tests/unit/api-key-registry.test.ts", "UniversalStandards/mcp/tests/unit/http-authentication.test.ts", "UniversalStandards/mcp/tests/unit/audit-log.test.ts"],
       "evidence": [],
       "releaseGate": "verification"
     },
@@ -204,7 +204,7 @@
       "repositories": ["UniversalStandards/UniversalStandards", "UniversalStandards/mcp", "UniversalStandards/atlantis-ai-enhanced", "Universal-Standard/SWARM"],
       "status": "in_progress",
       "implementationIssues": ["UniversalStandards/UniversalStandards#2", "UniversalStandards/mcp#256"],
-      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257"],
+      "implementationPullRequests": ["https://github.com/UniversalStandards/UniversalStandards/pull/3", "https://github.com/UniversalStandards/mcp/pull/257", "https://github.com/UniversalStandards/mcp/pull/260", "https://github.com/UniversalStandards/mcp/pull/261"],
       "tests": ["UniversalStandards/UniversalStandards/.github/workflows/identity-trust-traceability.yml", "UniversalStandards/mcp/.github/workflows/identity-trust.yml"],
       "evidence": [],
       "releaseGate": "release"
